@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import { loginApi ,createUserApi} from "../context/notes/ApiCalls";
 import {useNavigate} from 'react-router-dom';
+import  "./login.css";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({email:'',password:'',cpassword:'',username:''});
@@ -42,82 +43,133 @@ const Login = () => {
 
   }
   return (
-    <div>
-      <h2>{signup?'Sign Up':'Login'}</h2>
-      <form onSubmit={onSubmit}>
+    // <div>
+    //   <h2>{signup?'Sign Up':'Login'}</h2>
+    //   <form onSubmit={onSubmit}>
 
-      {signup && <div className="mb-3">
-          <label htmlFor="username" className="form-label">
-            UserName
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
+    //   {signup && <div className="user-box">
+    //       <label htmlFor="username" className="form-label">
+    //         UserName
+    //       </label>
+    //       <input
+    //         type="text"
+    //         className="form-control"
+    //         id="username"
             
-            onChange={onChange}
+    //         onChange={onChange}
+    //         value={credentials.username}
+    //         name="username"
+    //       />
+    //     </div>}
+
+    //     <div className="mb-3">
+    //       <label htmlFor="email" className="form-label">
+    //         Email address
+    //       </label>
+    //       <input
+    //         type="email"
+    //         className="form-control"
+    //         id="email"
+    //         value={credentials.email}
+    //         name="email"
+    //         onChange={onChange}
+    //         aria-describedby="emailHelp"
+    //       />
+
+    //       <div id="emailHelp" className="form-text">
+    //         We'll never share your email with anyone else.
+    //       </div>
+    //     </div>
+
+    //     <div className="mb-3">
+    //       <label htmlFor="password" className="form-label">
+    //         Password
+    //       </label>
+    //       <input
+    //         type="password"
+    //         className="form-control"
+    //         id="password"
+            
+    //         onChange={onChange}
+    //         value={credentials.password}
+    //         name="password"
+    //       />
+    //     </div>
+
+
+    //     {signup&&<div className="mb-3">
+    //       <label htmlFor="cpassword" className="form-label">
+    //        Confirm Password
+    //       </label>
+    //       <input
+    //         type="password"
+    //         className="form-control"
+    //         id="cpassword"
+    //         onChange={onChange}
+    //         value={credentials.cpassword}
+    //         name="cpassword"
+    //         minLength={8}
+    //       />
+    //     </div>}
+
+    //     <button type="submit" className="btn btn-primary">
+    //       Submit
+    //     </button>
+    //   </form>
+    //   <div style={{cursor:'pointer'}} onClick={()=>setSignUp(!signup)}>{signup?'Login':'Sign Up'}</div>
+
+    // </div>
+    <div className="login-box">
+  <h2>{signup?'Sign Up':'Login'}</h2>
+  <form onSubmit={onSubmit}>
+    <div className="user-box">
+      
+      <input type="text" 
+      
+           className="form-control"
+           id="username"
+              
+           onChange={onChange}
             value={credentials.username}
             name="username"
-          />
-        </div>}
-
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            value={credentials.email}
-            name="email"
-            onChange={onChange}
-            aria-describedby="emailHelp"
-          />
-
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            
-            onChange={onChange}
-            value={credentials.password}
-            name="password"
-          />
-        </div>
-
-
-        {signup&&<div className="mb-3">
-          <label htmlFor="cpassword" className="form-label">
-           Confirm Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="cpassword"
-            onChange={onChange}
-            value={credentials.cpassword}
-            name="cpassword"
-            minLength={8}
-          />
-        </div>}
-
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-      <div style={{cursor:'pointer'}} onClick={()=>setSignUp(!signup)}>{signup?'Login':'Sign Up'}</div>
-
+      
+      />
+      <label>Username</label>
     </div>
+    <div className="user-box">
+      <input type="text"
+    
+       
+
+       
+       />
+      <label>Email</label>
+    </div>
+    <div className="user-box">
+      <input type="password" name="" required=""/>
+      <label>Password</label>
+    </div>
+     <div className="user-box">
+      <input type="password" name="" required=""/>
+      <label>Confirm Password</label>
+    </div>
+    
+    <a href="#">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      Submit
+    </a>
+    <a href="#">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      Login
+    </a>
+  </form>
+</div>
   );
 };
 
