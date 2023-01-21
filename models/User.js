@@ -16,10 +16,12 @@ const UserSchema = new Schema({
     type : String,
     required :true
 },
-date :{
-    type : Date,
-    default : Date.now
-},
+
+about:{
+  type:String,
+  required:true
+}
+
 });
 const User =mongoose.model('user',UserSchema);
 User.createIndexes();
