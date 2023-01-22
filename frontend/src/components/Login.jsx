@@ -16,7 +16,7 @@ const Login = () => {
       if(credentials.cpassword!==credentials.password){
         alert("Password Donot match!!");
       }
-      const res=await createUserApi(credentials.username,credentials.email,credentials.password);
+      const res=await createUserApi(credentials.username,credentials.email,credentials.password,credentials.about);
      
     if(!res.success){
       alert(res.Error);
@@ -124,50 +124,80 @@ const Login = () => {
   <form onSubmit={onSubmit}>
     <div className="user-box">
       
+      {signup&&<>
       <input type="text" 
       
-           className="form-control"
-           id="username"
-              
-           onChange={onChange}
-            value={credentials.username}
-            name="username"
-      
-      />
-      <label>Username</label>
+      className="form-control"
+      id="username"
+         
+      onChange={onChange}
+       value={credentials.username}
+       name="username"
+ 
+ />
+ <label>Username</label></>
+  }
     </div>
     <div className="user-box">
-      <input type="text"
-    
-       
-
-       
-       />
+    <input
+           type="email"
+          className="form-control"
+          id="email"
+          onChange={onChange}
+         value={credentials.email}
+           name="email"
+          aria-describedby="emailHelp"
+         />
       <label>Email</label>
     </div>
     <div className="user-box">
-      <input type="password" name="" required=""/>
+    <input
+          type="password"
+             className="form-control"
+           id="password"
+            
+           onChange={onChange}
+          value={credentials.password}
+            name="password"
+          />
       <label>Password</label>
     </div>
      <div className="user-box">
-      <input type="password" name="" required=""/>
+     {signup&&<>
+      <input
+             type="password"
+             className="form-control"
+             id="cpassword"
+             onChange={onChange}
+             value={credentials.cpassword}
+             name="cpassword"
+             minLength={8}
+         />
       <label>Confirm Password</label>
+     </>
+      }
     </div>
+     <div className="user-box">
+     {signup&&<>
+      <input type="text" 
+      
+      className="form-control"
+      id="about"
+         
+      onChange={onChange}
+       value={credentials.about}
+       name="about"
+ 
+ />
+ <label>About</label></>
+  }
+     </div>
     
-    <a href="#">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Submit
-    </a>
-    <a href="#">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Login
-    </a>
+    <button type="submit" className="btn btn-primary">
+        Submit
+        </button>
+        <div className="login"style={{cursor:'pointer'}} onClick={()=>setSignUp(!signup)}>{signup?'Login':'Sign Up'}</div>
+    
   </form>
 </div>
   );

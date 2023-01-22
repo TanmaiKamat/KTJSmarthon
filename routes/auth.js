@@ -44,6 +44,7 @@ router.post(
         name: req.body.name,
         password: secPass,
         email: req.body.email,
+        about :req.body.about
       });
 
       //sending AuthToken
