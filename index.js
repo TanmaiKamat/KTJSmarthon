@@ -19,7 +19,7 @@ app.use(cors(corsOptions))
 
 app.use(express.json());
 app.use("/api/auth", authT);
-app.use("/api/notes", notesT);
+// app.use("/api/notes", notesT);
 
 app.use("/api/posts", postT);
 app.use(express.static("frontend/build"));

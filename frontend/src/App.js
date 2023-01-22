@@ -7,10 +7,13 @@ import MyNavbar from './components/MyNavbar';
 import NoteState from './context/notes/NoteState';
 import Login from './components/Login'
 import PostPage from './components/PostPage';
+import UserState from './context/user/UserState';
 
 function App() {
+  
   return (
     <NoteState>
+    <UserState>
     <Router>
     <div>
       <MyNavbar/>
@@ -24,6 +27,7 @@ function App() {
       </div>
     </div>
     </Router>
+    </UserState>
     </NoteState>
   );
 }

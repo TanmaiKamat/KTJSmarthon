@@ -1,42 +1,61 @@
 import NoteContext from "./noteContext";
 import { useState,useEffect } from "react";
-import getAllNotesApi,{deleteNoteApi,updateNoteApi,addNoteApi} from "./ApiCalls";
+import {getAllPrivatePostApi, getAllPublicPostApi, joinRequestApi} from "./ApiCalls";
 const NoteState=(props)=>{
     
      
       const [notes, setnotes] = useState([]);
-      const getNotes=async ()=>{
-        const allNotes=await getAllNotesApi(localStorage.getItem('token'));
+      const [privatePost, setPrivatePosts] = useState([]);
+      
+      const getPublicPost=async ()=>{
+        const allNotes=await getAllPublicPostApi();
         if(allNotes.success==true){
-          setnotes(allNotes.notes);
+          setnotes(allNotes.posts);
         }else{
           setnotes([]);
         }
       };
 
+
+
+      const getPrivatePost=async ()=>{
+        const allNotes=await getAllPrivatePostApi(localStorage.getItem('token'));
+        if(allNotes.success==true){
+          setPrivatePosts(allNotes.posts);
+        }else{
+          setPrivatePosts([]);
+        }
+        // const allNotes=await getAllNotesApi(localStorage.getItem('token'));
+        // if(allNotes.success==true){
+        //   setnotes(allNotes.notes);
+        // }else{
+        //   setnotes([]);
+        // }
+      };
      
       
       
       const addNote=async (note)=>{
-        const t=await addNoteApi(localStorage.getItem('token'),note.title,note.description,note.tag);
-        getNotes();
+        // const t=await addNoteApi(localStorage.getItem('token'),note.title,note.description,note.tag);
+        // getNotes();
 
       }
 
       const deleteNote=async (id)=>{
-        await deleteNoteApi(localStorage.getItem('token'),id);
-        getNotes();
+        // await deleteNoteApi(localStorage.getItem('token'),id);
+        // getNotes();
       }
-      const updateNote= async (id,title,description,tag)=>{
-        for(var i=0;i<notes.length;i++){
-          if(notes[i]._id==id){
-            const e=await updateNoteApi(localStorage.getItem('token'),id,title,description,tag)
-          }
-        }
-        getNotes();
+      const requestJoin= async (eventId,userId)=>{
+        // for(var i=0;i<notes.length;i++){
+        //   if(notes[i]._id==id){
+        //     const e=await updateNoteApi(localStorage.getItem('token'),id,title,description,tag)
+        //   }
+        // }
+        await joinRequestApi(eventId,userId);
+        getPublicPost()
       }
 return(
-    <NoteContext.Provider value={{notes,addNote,deleteNote,getNotes,updateNote}}>
+    <NoteContext.Provider value={{notes,getPublicPost,requestJoin,getPrivatePost}}>
     {props.children}
 </NoteContext.Provider>
 )

@@ -6,7 +6,7 @@ import NoteContext from "../context/notes/noteContext";
 export default function Notes() {
   const con = useContext(NoteContext);
   
-  const { notes,getNotes,updateNote,setAuth } = con;
+  const { notes,getNotes,updateNote} = con;
   const ref = useRef(null);
   const [note, setnote] = useState({title:"",description :"",tag :""});
   const navigate=useNavigate();
