@@ -12,8 +12,13 @@ export default function PostPage() {
   let {notes,getPublicPost,requestJoin}=useContext(NoteContext);
   let {user,getUser}=useContext(UserContext);
 
-  let onRequest=(eventID)=>{
-    requestJoin(eventID,user._id)
+  let onRequest=async (eventId)=>{
+
+
+    let res=await requestJoin(eventId,user._id)
+    // if(!res.success){
+    //   alert(res.error)
+    // }
     
   }
   useEffect(() => {

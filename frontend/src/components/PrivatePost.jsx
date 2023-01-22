@@ -140,7 +140,7 @@ export default function PrivatePost() {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary" onClick={()=>selectAuser(post._id,infoOfUser._id)} data-bs-dismiss="modal">Save changes</button>
+        <button type="button" className="btn btn-primary" onClick={()=>selectAuser(post._id,infoOfUser._id)} data-bs-dismiss="modal">Select User</button>
       </div>
     </div>
   </div>
@@ -201,7 +201,7 @@ export default function PrivatePost() {
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary" onClick={addPost} data-bs-dismiss="modal">Save changes</button>
+        <button type="button" className="btn btn-primary" onClick={addPost} data-bs-dismiss="modal">Add Event</button>
       </div>
     </div>
   </div>

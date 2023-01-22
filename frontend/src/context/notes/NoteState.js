@@ -51,8 +51,9 @@ const NoteState=(props)=>{
         //     const e=await updateNoteApi(localStorage.getItem('token'),id,title,description,tag)
         //   }
         // }
-        await joinRequestApi(eventId,userId);
+        let x=await joinRequestApi(eventId,userId);
         getPublicPost()
+        return x;
       }
 
       const selectAuserForEvent= async (eventId,userId)=>{
