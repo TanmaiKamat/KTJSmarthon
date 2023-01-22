@@ -55,7 +55,7 @@ const NoteState=(props)=>{
         getPublicPost()
       }
 return(
-    <NoteContext.Provider value={{notes,getPublicPost,requestJoin,getPrivatePost}}>
+    <NoteContext.Provider value={{notes,privatePost,getPublicPost,requestJoin,getPrivatePost}}>
     {props.children}
 </NoteContext.Provider>
 )
