@@ -1,8 +1,22 @@
 const port=process.env.PORT
 const host=`http://localhost:5000`;
 
-async function getAllNotesApi(auth) {
-    const url=`${host}/api/notes/allNotes`;
+async function getAllPublicPostApi() {
+    const url=`${host}/api/posts/allPublicPosts`;
+    const response = await fetch(url, {
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+       
+      } });
+  
+    return response.json();
+  
+  }
+
+
+  async function getAllPrivatePostApi(auth) {
+    const url=`${host}/api/posts/allPrivatePosts`;
     const response = await fetch(url, {
       method: 'GET', 
       headers: {
@@ -14,9 +28,9 @@ async function getAllNotesApi(auth) {
   
   }
 
-  async function deleteNoteApi(auth,id) {
+  async function deletePostApi(auth,id) {
 
-    const url=`${host}/api/notes/deleteNote/${id}`;
+    const url=`${host}/api/posts/deletePost/${id}`;
     const response = await fetch(url, {
       method: 'DELETE', 
       headers: {
@@ -27,28 +41,66 @@ async function getAllNotesApi(auth) {
     return response.json();
   
   }
-  async function updateNoteApi(auth,id,title,description,tag) {
-      const url=`${host}/api/notes/updateNote/${id}`
+
+
+
+
+  async function selectMembersApi(eventId,userId) {
+      const url=`${host}/api/posts/select/${eventId}`
   const response = await fetch(url, {
     method: 'PUT', 
     headers: {
       'Content-Type': 'application/json',
       'auth-token' : `${auth}`
     },
-   body: JSON.stringify({title,description,tag}) });
+   body: JSON.stringify({userId}) });
 
   return response.json();
 
 }
-async function addNoteApi(auth,title,description,tag) {
-    const url=`${host}/api/notes/addNote`
+
+async function removeMembersApi(eventId,userId) {
+  const url=`${host}/api/posts/remove/${eventId}`
+const response = await fetch(url, {
+method: 'PUT', 
+headers: {
+  'Content-Type': 'application/json',
+  'auth-token' : `${auth}`
+},
+body: JSON.stringify({userId}) });
+
+return response.json();
+
+}
+
+async function joinRequestApi(eventId,userId) {
+  const url=`${host}/api/posts/requestJoin${eventId}`
+const response = await fetch(url, {
+method: 'PUT', 
+headers: {
+  'Content-Type': 'application/json'
+},
+body: JSON.stringify({userId}) });
+
+return response.json();
+
+}
+
+
+
+
+
+
+
+async function addPostApi(name,requiredTeamMembers) {
+    const url=`${host}/api/posts/addPost`
   const response = await fetch(url, {
     method: 'POST', 
     headers: {
       'Content-Type': 'application/json',
       'auth-token' : `${auth}`
     },
-   body: JSON.stringify({title,description,tag}) });
+   body: JSON.stringify({name,requiredTeamMembers}) });
 
   return response.json();
 
@@ -95,7 +147,18 @@ async function createUserApi(name,email,password) {
 
 // }
 
-export {deleteNoteApi,updateNoteApi,addNoteApi,loginApi,createUserApi};
-export default getAllNotesApi;
+
+
+
+
+
+
+
+
+
+
+export {addPostApi,removeMembersApi,joinRequestApi,selectMembersApi,deletePostApi,getAllPrivatePostApi,getAllPublicPostApi,loginApi,createUserApi};
+export default getAllPublicPostApi
+;
 
 
