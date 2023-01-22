@@ -1,6 +1,6 @@
 import NoteContext from "./noteContext";
 import { useState,useEffect } from "react";
-import {getAllPrivatePostApi, getAllPublicPostApi, joinRequestApi, removeMembersApi, selectMembersApi} from "./ApiCalls";
+import {addPostApi, getAllPrivatePostApi, getAllPublicPostApi, joinRequestApi, removeMembersApi, selectMembersApi,deletePostApi} from "./ApiCalls";
 const NoteState=(props)=>{
     
      
@@ -35,15 +35,15 @@ const NoteState=(props)=>{
      
       
       
-      const addNote=async (note)=>{
-        // const t=await addNoteApi(localStorage.getItem('token'),note.title,note.description,note.tag);
-        // getNotes();
+      const addPostCall=async (note)=>{
+        const t=await addPostApi(localStorage.getItem('token'),note.name,note.requiredTeamMembers);
+        getPrivatePost()
 
       }
 
-      const deleteNote=async (id)=>{
-        // await deleteNoteApi(localStorage.getItem('token'),id);
-        // getNotes();
+      const deletePostCall=async (id)=>{
+        const t=await deletePostApi(localStorage.getItem('token'),id);
+        getPrivatePost()
       }
       const requestJoin= async (eventId,userId)=>{
         // for(var i=0;i<notes.length;i++){
@@ -75,7 +75,7 @@ const NoteState=(props)=>{
         getPrivatePost();
       }
 return(
-    <NoteContext.Provider value={{notes,privatePost,getPublicPost,requestJoin,getPrivatePost,selectAuserForEvent,removeMembers}}>
+    <NoteContext.Provider value={{notes,privatePost,getPublicPost,requestJoin,getPrivatePost,selectAuserForEvent,removeMembers,addPostCall,deletePostCall}}>
     {props.children}
 </NoteContext.Provider>
 )

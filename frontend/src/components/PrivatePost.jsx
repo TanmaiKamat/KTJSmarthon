@@ -13,8 +13,10 @@ export default function PrivatePost() {
     
   let navigate=useNavigate();
   const ref = useRef(null);
-  let {privatePost,getPrivatePost,selectAuserForEvent,removeMembers}=useContext(NoteContext);
+  const ref1 = useRef(null);
+  let {privatePost,getPrivatePost,selectAuserForEvent,removeMembers,addPostCall,deletePostCall}=useContext(NoteContext);
   let [post,selectPost]=useState({});
+  const [note, setnote] = useState({name:"",requiredTeamMembers :0});
   const MoreInfoPopUp=async(userId)=>{
     let userProfile=await getProfileApi(userId)
     console.log(userProfile)
@@ -50,12 +52,28 @@ export default function PrivatePost() {
 
   }
 
+  const valueChange=(e)=>{
+    setnote({...note,[e.target.name]: e.target.value})
+  }
+
   let removeAuser=(eventId,UserId)=>{
     removeMembers(eventId,UserId)
 
 
   }
 
+  let showAddModal=()=>{
+    ref1.current.click();
+  }
+
+  let addPost=()=>{
+    if(note.requiredTeamMembers){
+    addPostCall(note)
+    }
+  }
+  let deletePost=(id)=>{
+    deletePostCall(id);
+  }
 
   useEffect(() => {
     if(localStorage.getItem('token')){
@@ -70,6 +88,15 @@ export default function PrivatePost() {
 
     
   },[]);
+
+  useEffect(() => {
+    if(post._id!=null){
+        let note1=privatePost.find((e)=>(e._id==post._id))
+        selectPost(note1);
+    }
+
+    
+  },[privatePost]);
 
 //   let statusOfPost=(event)=>{
 //     if(event.joiningRequest.includes(user._id)){
@@ -120,6 +147,67 @@ export default function PrivatePost() {
 </div>
 
  
+
+<button type="button" ref={ref1} style={{visibility:'hidden'}} className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+  Launch demo modal
+</button>
+
+<div className="modal fade" id="exampleModal1" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">Update Note</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+      <form>
+        <div className="mb-3">
+          <label htmlFor="name"  className="form-label text-dark">
+            Name
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            name="name"
+            value={note.name}
+            onChange={valueChange}
+            aria-describedby="emailHelp"
+          />
+          
+        </div>
+        <div className="mb-3">
+          <label htmlFor="requiredTeamMembers"  className="form-label text-dark">
+            Required Members
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="requiredTeamMembers"
+            value={note.requiredTeamMembers}
+            onChange={valueChange}
+            name="requiredTeamMembers"
+          />
+        </div>
+        
+       
+
+
+        
+
+
+
+      </form>
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" className="btn btn-primary" onClick={addPost} data-bs-dismiss="modal">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   
  {
     post._id==null? <div className="table-responsive-vertical shadow-z-1">
@@ -148,7 +236,7 @@ export default function PrivatePost() {
        <button onClick={()=>onRequest(e)} data-title="Accept">{e.joiningRequest.length} Requests</button>
        </td>
        <td>
-       <button data-title="Accept">Delete</button>
+       <button onClick={()=>deletePost(e._id)}  data-title="Accept">Delete</button>
        </td>
                     </tr>
                   )
@@ -157,6 +245,7 @@ export default function PrivatePost() {
     
         </tbody>
       </table>
+      <button onClick={()=>showAddModal()}>Add</button>
 
   
       
@@ -183,7 +272,7 @@ export default function PrivatePost() {
        <button onClick={()=>selectAuser(post._id,e)} data-title="Accept">Accept</button>
        </td>
        <td>
-       <button data-title="Accept">Delete</button>
+       <button onClick={()=>removeAuser(post._id,e)} data-title="Accept">Delete</button>
        </td>
                     </tr>
                   )

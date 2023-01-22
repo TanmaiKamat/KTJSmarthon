@@ -58,7 +58,7 @@ export default function PostPage() {
       </thead>
       <tbody>
         {
-            notes.map((e,k)=>{
+            notes.filter((e)=>(e.user!=user._id)).map((e,k)=>{
                 return (
                     <tr key={k}>
                     <td data-title="ID">{e._id}</td>
