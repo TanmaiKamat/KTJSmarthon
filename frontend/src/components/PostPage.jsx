@@ -66,7 +66,7 @@ export default function PostPage() {
                     <td data-title="Required">
                      {e.requiredTeamMembers}
                     </td>
-                    <button onClick={()=>onRequest(e._id)} data-title="Accept">{statusOfPost(e)}</button>
+                   <td> <button onClick={()=>onRequest(e._id)} data-title="Accept">{statusOfPost(e)}</button></td>
                   </tr>
                 )
             })
