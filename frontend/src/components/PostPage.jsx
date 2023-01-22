@@ -1,47 +1,72 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useContext } from 'react';
 import {useNavigate} from 'react-router-dom';
+import { getUserApi } from '../context/notes/ApiCalls';
+import NoteContext from '../context/notes/noteContext';
+import UserContext from '../context/user/UserContext';
 import  "./PostPage.css";
 
 export default function PostPage() {
-    let parti=[{
-        "ID":1,
-        "Name":"Material Design Color Palette",
-        "Link-title":"GitHub",
-        "Link":"https://github.com/zavoloklom/material-design-color-palette",
+  let navigate=useNavigate();
+  
+  let {notes,getPublicPost,requestJoin}=useContext(NoteContext);
+  let {user,getUser}=useContext(UserContext);
 
-    },
+  let onRequest=(eventID)=>{
+    requestJoin(eventID,user._id)
+    
+  }
+  useEffect(() => {
+    if(localStorage.getItem('token')){
+      getPublicPost();
+      getUser();
+      
+    }else{
+      navigate('/login');
+    }
 
-];
+    
+  },[]);
+
+  let statusOfPost=(event)=>{
+    if(event.joiningRequest.includes(user._id)){
+      return "Requested"
+    }
+    if(event.selectedMembers.includes(user._id)){
+      return "Selected"
+    }
+    return "Request"
+  }
+
+
   return (
     
     <div class="demo">
-  <h1>Material Design Responsive Table</h1>
-  <h2>Table of my other Material Design works </h2>
-  
+  <h1>All Available Posts</h1>
  
   
   <div className="table-responsive-vertical shadow-z-1">
  
-  <table id="table" class="table table-hover table-mc-light-blue">
+  <table id="table" class="table  table-mc-light-blue">
       <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
-          <th>Link</th>
-          <th>Status</th>
+          <th>Required</th>
+          <th>Accept</th>
         </tr>
       </thead>
       <tbody>
         {
-            parti.map((e,k)=>{
+            notes.map((e,k)=>{
                 return (
                     <tr key={k}>
-                    <td data-title="ID">{e.ID}</td>
-                    <td data-title="Name">{e.Name}</td>
-                    <td data-title="Link">
-                      <a href={e.Link} target="_blank">{e['Link-title']}</a>
+                    <td data-title="ID">{e._id}</td>
+                    <td data-title="Name">{e.name}</td>
+                    <td data-title="Required">
+                     {e.requiredTeamMembers}
                     </td>
-                    <td data-title="Status">Completed</td>
+                    <button onClick={()=>onRequest(e._id)} data-title="Accept">{statusOfPost(e)}</button>
                   </tr>
                 )
             })

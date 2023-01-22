@@ -113,10 +113,25 @@ router.post("/getUser", fetchUser, async (req, res) => {
   const userId = req.user.id;
   try {
     const user = await User.findById(userId).select("-password");
-    res.send(user);
+    res.send({user,success:true});
   } catch (e) {
     console.error(e.message);
-    res.status(500).send({ Error: "Server Error" });
+    res.status(500).send({ Error: "Server Error" ,success:false});
+  }
+});
+
+
+
+
+//Get login details using Post MEthod.Login using auth Token
+router.get("/getProfile/:id", async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findById(userId).select("-password");
+    res.send({user,success:true});
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send({ Error: "Server Error" ,success:false});
   }
 });
 module.exports = router;

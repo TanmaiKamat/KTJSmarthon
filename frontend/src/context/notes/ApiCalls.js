@@ -14,6 +14,32 @@ async function getAllPublicPostApi() {
   
   }
 
+  async function getUserApi(token) {
+    const url=`${host}/api/auth/getUser`;
+    const response = await fetch(url, {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token' : `${token}`
+      } });
+  
+    return response.json();
+  
+  }
+
+
+  async function getProfileApi(id) {
+    const url=`${host}/api/auth/getProfile/${id}`;
+    const response = await fetch(url, {
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json',
+       
+      } });
+  
+    return response.json();
+  
+  }
 
   async function getAllPrivatePostApi(auth) {
     const url=`${host}/api/posts/allPrivatePosts`;
@@ -45,7 +71,7 @@ async function getAllPublicPostApi() {
 
 
 
-  async function selectMembersApi(eventId,userId) {
+  async function selectMembersApi(auth,eventId,userId) {
       const url=`${host}/api/posts/select/${eventId}`
   const response = await fetch(url, {
     method: 'PUT', 
@@ -59,7 +85,7 @@ async function getAllPublicPostApi() {
 
 }
 
-async function removeMembersApi(eventId,userId) {
+async function removeMembersApi(auth,eventId,userId) {
   const url=`${host}/api/posts/remove/${eventId}`
 const response = await fetch(url, {
 method: 'PUT', 
@@ -74,7 +100,7 @@ return response.json();
 }
 
 async function joinRequestApi(eventId,userId) {
-  const url=`${host}/api/posts/requestJoin${eventId}`
+  const url=`${host}/api/posts/requestJoin/${eventId}`
 const response = await fetch(url, {
 method: 'PUT', 
 headers: {
@@ -92,7 +118,7 @@ return response.json();
 
 
 
-async function addPostApi(name,requiredTeamMembers) {
+async function addPostApi(auth,name,requiredTeamMembers) {
     const url=`${host}/api/posts/addPost`
   const response = await fetch(url, {
     method: 'POST', 
@@ -157,7 +183,7 @@ async function createUserApi(name,email,password,about) {
 
 
 
-export {addPostApi,removeMembersApi,joinRequestApi,selectMembersApi,deletePostApi,getAllPrivatePostApi,getAllPublicPostApi,loginApi,createUserApi};
+export {addPostApi,removeMembersApi,joinRequestApi,selectMembersApi,deletePostApi,getAllPrivatePostApi,getAllPublicPostApi,loginApi,createUserApi,getUserApi,getProfileApi};
 export default getAllPublicPostApi
 ;
 
