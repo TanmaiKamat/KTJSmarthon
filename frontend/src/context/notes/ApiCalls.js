@@ -121,14 +121,14 @@ async function loginApi(email,password) {
 }
 
 
-async function createUserApi(name,email,password) {
+async function createUserApi(name,email,password,about) {
   const url=`${host}/api/auth/createUser`
   const response = await fetch(url, {
     method: 'POST', 
     headers: {
       'Content-Type': 'application/json'
     },
-   body: JSON.stringify({name,email,password}) });
+   body: JSON.stringify({name,email,password,about}) });
 
   return response.json();
 
