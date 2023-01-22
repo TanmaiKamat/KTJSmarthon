@@ -6,7 +6,7 @@ const { body, validationResult } = require("express-validator");
 
 const Post = require("../models/Post");
 const User=require("../models/User")
-//Get Method for all Notes.
+//Get Method for all Posts.
 router.get("/allPublicPosts", async (req, res) => {
   try{
     console.log(req.user);
@@ -33,7 +33,7 @@ router.get("/allPrivatePosts", fetchUser, async (req, res) => {
 
 
 
-//Add New Note . Login Required
+//Add New post . Login Required
 router.post(
   "/addPost",
   fetchUser,
@@ -82,6 +82,10 @@ router.put("/requestJoin/:id",  async (req, res) => {
     if (!curPost) {
       return res.status(404).json({error:"Not Found",success});
     }
+    if (curPost.joiningRequest.includes(userId)) {
+      return res.status(404).json({error:"Already Requested",success});
+    }
+    
     
     curPost["joiningRequest"].push(userId)
 
@@ -91,7 +95,6 @@ router.put("/requestJoin/:id",  async (req, res) => {
       
       { new: true }
     );
-    // const note=Note.findByIdAndUpdate()
 
     res.status(200).json({curPost,success});
   } catch (e) {
@@ -103,14 +106,14 @@ router.put("/requestJoin/:id",  async (req, res) => {
 
 
 
-//Update Note . Login Required
+//Update Post . Login Required
 router.put("/select/:id", fetchUser, async (req, res) => {
   let success=false;
   try {
     const { userId } = req.body;
     
     let curPost = await Post.findById(req.params.id);
-    let user1 = await User.findById(req.params.id);
+    let user1 = await User.findById(userId);
     if (!curPost) {
       return res.status(404).json({error:"No Post Found",success});
     }
@@ -120,13 +123,23 @@ router.put("/select/:id", fetchUser, async (req, res) => {
     if (curPost.user.toString() !== req.user.id) {
       return res.status(401).send({error:"Access denied",success});
     }
+    if (curPost.selectedMembers.includes(userId)) {
+      return res.status(401).send({error:"User Already added",success});
+    }
+    if (curPost.selectedMembers.length==curPost.requiredTeamMembers) {
+      return res.status(401).send({error:"Team Full!",success});
+    }
 
+    curPost.selectedMembers.push(userId);
+    const index = curPost.joiningRequest.indexOf(userId);
+    if (index > -1) { 
+      curPost.joiningRequest.splice(index, 1); 
+    }
     curPost = await Post.findByIdAndUpdate(
       req.params.id,
       { $set: curPost },
       { new: true }
     );
-    // const note=Note.findByIdAndUpdate()
 
     res.status(200).json({curPost,success});
   } catch (e) {
@@ -135,21 +148,71 @@ router.put("/select/:id", fetchUser, async (req, res) => {
   }
 });
 
-//Delete  Note. DELETE Method . Login Required
-router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
+
+
+
+//Update Post . Login Required
+router.put("/remove/:id", fetchUser, async (req, res) => {
+  let success=false;
   try {
-    let curNote = await Note.findById(req.params.id);
-    if (!curNote) {
+    const { userId } = req.body;
+    
+    let curPost = await Post.findById(req.params.id);
+    let user1 = await User.findById(userId);
+    if (!curPost) {
+      return res.status(404).json({error:"No Post Found",success});
+    }
+    if (!user1) {
+      return res.status(404).json({error:"User Not Found",success});
+    }
+    if (curPost.user.toString() !== req.user.id) {
+      return res.status(401).send({error:"Access denied",success});
+    }
+    
+
+
+    const index = curPost.selectedMembers.indexOf(userId);
+    if (index > -1) { 
+      curPost.selectedMembers.splice(index, 1); 
+    }
+    const index1 = curPost.joiningRequest.indexOf(userId);
+    if (index1 > -1) { 
+      curPost.joiningRequest.splice(index1, 1); 
+    }
+    curPost = await Post.findByIdAndUpdate(
+      req.params.id,
+      { $set: curPost },
+      { new: true }
+    );
+
+    res.status(200).json({curPost,success});
+  } catch (e) {
+    console.error(e.message);
+    res.status(500).send({ InternalError: "Internal Error" });
+  }
+});
+
+
+
+
+
+
+
+//Delete Post. DELETE Method . Login Required
+router.delete("/deletePost/:id", fetchUser, async (req, res) => {
+  try {
+    let curPost = await Post.findById(req.params.id);
+    if (!curPost) {
       return res.status(404).send("Not Found");
     }
-    if (curNote.user.toString() !== req.user.id) {
+    if (curPost.user.toString() !== req.user.id) {
       return res.status(401).send("Not allowed");
     }
 
-    curNote = await Note.findByIdAndDelete(req.params.id);
-    // const note=Note.findByIdAndUpdate()
+    curPost = await Post.findByIdAndDelete(req.params.id);
+  
 
-    res.status(200).json({ Success: "Successfully deleted", note: curNote });
+    res.status(200).json({ Success: "Successfully deleted", post: curPost });
   } catch (e) {
     console.error(e.message);
     res.status(500).send({ InternalError: "Internal Error" });

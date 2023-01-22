@@ -4,6 +4,7 @@ var cors = require('cors')
 const express = require("express");
 const authT=require('./routes/auth');
 const notesT=require('./routes/notes');
+const postT=require('./routes/postsC');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use("/api/auth", authT);
 app.use("/api/notes", notesT);
 
+app.use("/api/posts", postT);
 app.use(express.static("frontend/build"));
 
 const path = require("path");
