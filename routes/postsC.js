@@ -9,7 +9,6 @@ const User=require("../models/User")
 //Get Method for all Posts.
 router.get("/allPublicPosts", async (req, res) => {
   try{
-    console.log(req.user);
   const posts = await Post.find();
   res.json({posts,success:true});
   }catch(e){
@@ -17,6 +16,11 @@ router.get("/allPublicPosts", async (req, res) => {
     res.status(401).json({succss:false,error:e.message});
   }
 });
+
+
+
+
+
 
 
 router.get("/allPrivatePosts", fetchUser, async (req, res) => {
