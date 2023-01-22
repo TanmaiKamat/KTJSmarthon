@@ -12,10 +12,10 @@ export default function PrivatePost() {
   let {privatePost,getPrivatePost,requestJoin}=useContext(NoteContext);
   let {user,getUser}=useContext(UserContext);
 
-  let onRequest=(eventID)=>{
-    requestJoin(eventID,user._id)
+//   let onRequest=(eventID)=>{
+//     requestJoin(eventID,user._id)
     
-  }
+//   }
   useEffect(() => {
     if(localStorage.getItem('token')){
       getPrivatePost();
@@ -30,15 +30,15 @@ export default function PrivatePost() {
     
   },[]);
 
-  let statusOfPost=(event)=>{
-    if(event.joiningRequest.includes(user._id)){
-      return "Requested"
-    }
-    if(event.selectedMembers.includes(user._id)){
-      return "Selected"
-    }
-    return "Request"
-  }
+//   let statusOfPost=(event)=>{
+//     if(event.joiningRequest.includes(user._id)){
+//       return "Requested"
+//     }
+//     if(event.selectedMembers.includes(user._id)){
+//       return "Selected"
+//     }
+//     return "Request"
+//   }
 
 
   return (
@@ -56,6 +56,7 @@ export default function PrivatePost() {
           <th>Name</th>
           <th>Required</th>
           <th>Accept</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -68,7 +69,12 @@ export default function PrivatePost() {
                     <td data-title="Required">
                      {e.requiredTeamMembers}
                     </td>
-                    <button onClick={()=>onRequest(e._id)} data-title="Accept">{statusOfPost(e)}</button>
+     <td>
+     <button data-title="Accept">{e.joiningRequest.length} Requests</button>
+     </td>
+     <td>
+     <button data-title="Accept">Delete</button>
+     </td>
                   </tr>
                 )
             })
